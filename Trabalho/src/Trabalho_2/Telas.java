@@ -6,7 +6,9 @@
 package Trabalho_2;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 
 /**
@@ -109,8 +111,27 @@ public class Telas extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-                
+//        JPasswordField password = new JPasswordField();  
+//        password.setEchoChar('*');
         JOptionPane.showInputDialog("USUARIO");
+//        JOptionPane.showInputDialog("SENHA");
+// Cria campo onde o usuario entra com a senha
+		JPasswordField password = new JPasswordField(10);
+		password.setEchoChar('*'); 
+		// Cria um rótulo para o campo
+		JLabel rotulo = new JLabel("Entre com a senha:");
+		// Coloca o rótulo e a caixa de entrada numa JPanel:
+		JPanel entUsuario = new JPanel();
+		entUsuario.add(rotulo);
+		entUsuario.add(password);
+		// Mostra o rótulo e a caixa de entrada de password para o usuario fornecer a senha:
+		JOptionPane.showMessageDialog(null, entUsuario, "Acesso restrito", JOptionPane.PLAIN_MESSAGE);
+		// O programa só prossegue quando o usuário clicar o botao de OK do showMessageDialog. 
+		// Aí, é só pegar a senha:
+		// Captura a senha:
+		String senha = password.getText();
+		
+        
         
                 
                 

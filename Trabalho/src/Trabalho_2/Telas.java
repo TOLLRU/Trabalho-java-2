@@ -5,25 +5,41 @@
  */
 package Trabalho_2;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.stage.FileChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import sun.swing.FilePane;
 
 /**
  *
  * @author VITOR
  */
 public class Telas extends javax.swing.JFrame {
-
     /**
      * Creates new form Telas
      */
+    CaixaDeTexto caixa = new CaixaDeTexto();
     public Telas() {
         initComponents();
+        
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,12 +51,12 @@ public class Telas extends javax.swing.JFrame {
 
         jFrame1 = new javax.swing.JFrame();
         jFrame2 = new javax.swing.JFrame();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        TELA1 = new javax.swing.JTextPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        TELA2 = new javax.swing.JTextPane();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        Tela1 = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Tela2 = new javax.swing.JTextArea();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -66,13 +82,27 @@ public class Telas extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jScrollPane1.setViewportView(TELA1);
-
-        jScrollPane2.setViewportView(TELA2);
-
         jButton1.setText("Ler Arquivo");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Salva Arquivo");
+        jButton2.setText("Salvar Arquivo");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        Tela1.setColumns(20);
+        Tela1.setRows(5);
+        jScrollPane3.setViewportView(Tela1);
+
+        Tela2.setColumns(20);
+        Tela2.setRows(5);
+        jScrollPane2.setViewportView(Tela2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,56 +110,127 @@ public class Telas extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(139, 139, 139)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(444, Short.MAX_VALUE)
                 .addComponent(jButton1)
-                .addGap(90, 90, 90))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addGap(66, 66, 66))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        File arq = new File(caixa.Diretorio);
+        try {
+            FileWriter fw = new FileWriter(arq,true);
+            PrintWriter pw = new PrintWriter(fw);
+            pw.println(caixa.Texto);
+            pw.flush();
+            pw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Telas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        caixa.Texto = Tela1.getText();
+	Tela2.setText(caixa.Texto);
+
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        if (chooser.showSaveDialog(null) != JFileChooser.APPROVE_OPTION)
+            return;
+        File file = chooser.getSelectedFile();
+        if (!file.getAbsolutePath().endsWith(".txt"))
+            file = new File(file.getAbsolutePath() + ".txt");
+        
+        try {  
+            InputStream is = new FileInputStream(file); 
+            InputStreamReader isr = new InputStreamReader(is); 
+            BufferedReader br = new BufferedReader(isr); 
+            String s = "";
+            caixa.Texto = "";
+            while ( (s = br.readLine()) != null ){
+		Tela1.append(s + "\n");
+            }
+            caixa.Texto = Tela1.getText();
+            caixa.Nome = file.getName();
+            caixa.Diretorio = file.getCanonicalPath();
+            
+         } catch(Exception x){ 
+            System.out.println(x.getMessage()); 
+         }    
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-//        JPasswordField password = new JPasswordField();  
-//        password.setEchoChar('*');
-        JOptionPane.showInputDialog("USUARIO");
-//        JOptionPane.showInputDialog("SENHA");
-// Cria campo onde o usuario entra com a senha
-		JPasswordField password = new JPasswordField(10);
-		password.setEchoChar('*'); 
-		// Cria um rótulo para o campo
-		JLabel rotulo = new JLabel("Entre com a senha:");
-		// Coloca o rótulo e a caixa de entrada numa JPanel:
-		JPanel entUsuario = new JPanel();
-		entUsuario.add(rotulo);
-		entUsuario.add(password);
-		// Mostra o rótulo e a caixa de entrada de password para o usuario fornecer a senha:
-		JOptionPane.showMessageDialog(null, entUsuario, "Acesso restrito", JOptionPane.PLAIN_MESSAGE);
-		// O programa só prossegue quando o usuário clicar o botao de OK do showMessageDialog. 
-		// Aí, é só pegar a senha:
-		// Captura a senha:
-		String senha = password.getText();
+
+        JPanel loginUsuario = new JPanel();
+        JLabel lgUsuario = new JLabel("Login");
+        JTextField cpUsuario = new JTextField(10);
+        loginUsuario.add(lgUsuario);
+        loginUsuario.add(cpUsuario);
+        
+        JPanel senhaUsuario = new JPanel();
+        JLabel lgSenha = new JLabel("Senha");
+        JPasswordField passwordUsuario = new JPasswordField(10);
+        passwordUsuario.setEchoChar('*'); 
+        senhaUsuario.add(lgSenha);
+        senhaUsuario.add(passwordUsuario);
+
+        JOptionPane.showMessageDialog(null, loginUsuario, "Acesso restrito", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(null, senhaUsuario, "Acesso restrito", JOptionPane.PLAIN_MESSAGE);
+        
+        char[] senhaVet = passwordUsuario.getPassword();
+        String senha = String.copyValueOf(senhaVet);
+        if (!senha.equals("123")){
+            JOptionPane.showMessageDialog(null, "Senha invalida");
+        }
+        System.out.println(senha);
+        do {
+            if (!senha.equals("123")){
+                
+                senha = "";
+                
+                JPanel novaTentativa = new JPanel();
+                JLabel novaSenha = new JLabel("Senha");
+                JPasswordField novoPassword = new JPasswordField(10);
+                passwordUsuario.setEchoChar('*'); 
+                novaTentativa.add(novaSenha);
+                novaTentativa.add(novoPassword);
+                
+                JOptionPane.showMessageDialog(null, loginUsuario, "Acesso restrito", JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null, novaTentativa, "Acesso restrito", JOptionPane.PLAIN_MESSAGE);
+                
+                senhaVet = novoPassword.getPassword();
+                senha = String.copyValueOf(senhaVet);
+                System.out.println(senha);
+            }
+        } while (!senha.equals("123"));
+                
+                
 		
         
         
@@ -173,13 +274,13 @@ public class Telas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextPane TELA1;
-    private javax.swing.JTextPane TELA2;
+    private javax.swing.JTextArea Tela1;
+    private javax.swing.JTextArea Tela2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables
 }

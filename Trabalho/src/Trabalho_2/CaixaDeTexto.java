@@ -10,5 +10,7 @@ package Trabalho_2;
  * @author VITOR
  */
 class CaixaDeTexto {
-    
+    public static String Texto;
+    public static String Diretorio;
+    public static String Nome;
 }

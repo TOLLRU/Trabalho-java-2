@@ -57,6 +57,12 @@ public class Telas extends javax.swing.JFrame {
         Tela1 = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         Tela2 = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        qntVogais = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        qntConsoantes = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        qntEspaco = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -104,22 +110,45 @@ public class Telas extends javax.swing.JFrame {
         Tela2.setRows(5);
         jScrollPane2.setViewportView(Tela2);
 
+        jLabel1.setText("Vogais:");
+
+        jLabel3.setText("Consoantes:");
+
+        jLabel2.setText("Espaços:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(qntVogais, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                                    .addComponent(qntConsoantes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(qntEspaco, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane2)
+                        .addGap(18, 18, 18)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(444, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addGap(66, 66, 66))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,28 +157,45 @@ public class Telas extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(qntVogais, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(1, 1, 1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(qntConsoantes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(2, 2, 2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(qntEspaco, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(63, 63, 63))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2)
+                            .addComponent(jButton1))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        caixa.Texto = Tela1.getText();
         File arq = new File(caixa.Diretorio);
         try {
             FileWriter fw = new FileWriter(arq,true);
             PrintWriter pw = new PrintWriter(fw);
-            pw.println(caixa.Texto);
+            pw.println("");
+            //pw.println(caixa.Texto);
             pw.flush();
             pw.close();
         } catch (IOException ex) {
             Logger.getLogger(Telas.class.getName()).log(Level.SEVERE, null, ex);
         }
-        caixa.Texto = Tela1.getText();
 	Tela2.setText(caixa.Texto);
 
 
@@ -176,10 +222,31 @@ public class Telas extends javax.swing.JFrame {
             caixa.Nome = file.getName();
             caixa.Diretorio = file.getCanonicalPath();
             
-         } catch(Exception x){ 
+        } catch(Exception x){ 
             System.out.println(x.getMessage()); 
-         }    
+        }    
         
+        int vog = 0, cons = 0, espc = 0;
+
+        String frase = caixa.Texto.toLowerCase();
+        for(int i = 0; i < frase.length(); i++){
+            char c = frase.charAt(i);
+            if(c == 32){
+                espc++;
+                continue;
+            }
+            if(c == 97 | c == 101 | c == 105 | c == 111 | c == 117){
+                vog++;
+                continue;
+            }
+            if(c >= 98 && c <= 122) cons++;
+        }
+
+        qntVogais.setText(Integer.toString(vog));
+        qntConsoantes.setText(Integer.toString(cons));
+        qntEspaco.setText(Integer.toString(espc));
+        
+        vog = 0; cons = 0; espc = 0;
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -227,6 +294,7 @@ public class Telas extends javax.swing.JFrame {
                 senhaVet = novoPassword.getPassword();
                 senha = String.copyValueOf(senhaVet);
                 System.out.println(senha);
+                JOptionPane.showMessageDialog(null, "Senha invalida");
             }
         } while (!senha.equals("123"));
                 
@@ -280,7 +348,13 @@ public class Telas extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JFrame jFrame2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel qntConsoantes;
+    private javax.swing.JLabel qntEspaco;
+    private javax.swing.JLabel qntVogais;
     // End of variables declaration//GEN-END:variables
 }

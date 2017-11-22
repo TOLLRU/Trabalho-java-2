@@ -17,6 +17,7 @@ import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.stage.FileChooser;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import sun.swing.FilePane;
 
@@ -64,6 +66,49 @@ public class Telas extends javax.swing.JFrame {
         
         vog = 0; cons = 0; espc = 0;
     }
+    
+    class CustomFileFilter extends FileFilter{
+        String descricao;
+        String extensoes[];
+
+        public CustomFileFilter(String descricao, String[] extensoes){
+            super();
+            if (descricao == null) {
+                this.descricao = extensoes[0];
+            } else {
+                this.descricao = descricao;
+            }
+            this.extensoes = (String[]) extensoes.clone();
+            toLower(this.extensoes);
+        }
+
+        private void toLower(String array[]) {
+            for (int i = 0, n = array.length; i < n; i++) {
+                array[i] = array[i].toLowerCase();
+            }
+        }
+
+        public boolean accept(File arquivo) {
+            if (arquivo.isDirectory()) {
+                return true;
+            } else {
+                String path = arquivo.getAbsolutePath().toLowerCase();
+                for (int i = 0, n = extensoes.length; i < n; i++) {
+                    String extension = extensoes[i];
+                    if ((path.endsWith(extension) && (path.charAt(path.length() - extension.length() - 1)) == '.')) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String getDescription() {
+            return descricao;
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -87,7 +132,6 @@ public class Telas extends javax.swing.JFrame {
         qntConsoantes = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         qntEspaco = new javax.swing.JLabel();
-        limparArquivo = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
@@ -143,13 +187,6 @@ public class Telas extends javax.swing.JFrame {
 
         jLabel2.setText("Espaços:");
 
-        limparArquivo.setText("Limpar Arquivo");
-        limparArquivo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                limparArquivoActionPerformed(evt);
-            }
-        });
-
         jLabel4.setText("Arquivo:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -175,22 +212,20 @@ public class Telas extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                         .addComponent(lerArquivo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(salvarArquivo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(limparArquivo)
-                        .addGap(20, 20, 20))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3)
-                        .addContainerGap())))
+                        .addGap(78, 78, 78))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(295, 295, 295)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -201,56 +236,67 @@ public class Telas extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 441, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(qntVogais, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(qntConsoantes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(qntConsoantes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(2, 2, 2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(qntEspaco, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(15, 15, 15))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lerArquivo)
-                            .addComponent(salvarArquivo)
-                            .addComponent(limparArquivo))))
-                .addGap(2, 2, 2)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(qntEspaco, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15))
+                            .addComponent(salvarArquivo))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void salvarArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarArquivoActionPerformed
-        caixa.Texto = Tela1.getText();
-        File arq = new File(caixa.Diretorio);
-        
-        try {
-            FileWriter fw = new FileWriter(arq,true);
-            PrintWriter pw = new PrintWriter(fw);
-            pw.write(""); 
-            pw.flush();
-            pw.write(caixa.Texto);
-            pw.flush();
-            pw.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Telas.class.getName()).log(Level.SEVERE, null, ex);
+        if (caixa.Nome == null){
+            JOptionPane.showMessageDialog(null, "Insira um arquivo para ser modificado!");
+        } else {
+            caixa.Texto = Tela1.getText();
+            File arq = new File(caixa.Diretorio);
+
+            try {
+                FileWriter fw = new FileWriter(arq, false);
+                PrintWriter pw = new PrintWriter(fw);
+                pw.write(""); 
+                pw.flush();
+                pw.write(caixa.Texto);
+                pw.flush();
+                pw.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Telas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Tela2.setText(caixa.Texto);
+            atualizaLetras();
         }
-	Tela2.setText(caixa.Texto);
-        atualizaLetras();
     }//GEN-LAST:event_salvarArquivoActionPerformed
 
     private void lerArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lerArquivoActionPerformed
+        caixa.Texto = "";
+        Tela2.setText("");
+        Tela1.setText("");
+        //jLabel5.setText("");
         JFileChooser chooser = new JFileChooser();
+        CustomFileFilter filtro = new CustomFileFilter("Arquivos de texto", new String[] {"txt"});
+        chooser.setFileFilter(filtro);
+        chooser.setAcceptAllFileFilterUsed(false);
         if (chooser.showSaveDialog(null) != JFileChooser.APPROVE_OPTION)
             return;
         File file = chooser.getSelectedFile();
@@ -278,56 +324,22 @@ public class Telas extends javax.swing.JFrame {
         
     }//GEN-LAST:event_lerArquivoActionPerformed
 
-    private void limparArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparArquivoActionPerformed
-        caixa.Texto = "";
-        File arq = new File(caixa.Diretorio);
-        
-        try {
-            FileWriter fw = new FileWriter(arq);
-            //PrintWriter pw = new PrintWriter(fw);
-            fw.write(""); 
-            fw.flush();
-            fw.close();
-        } catch (IOException ex) {
-            Logger.getLogger(Telas.class.getName()).log(Level.SEVERE, null, ex);
-        }
-	Tela2.setText(caixa.Texto);
-        Tela1.setText(caixa.Texto);
-        
-        atualizaLetras();
-    }//GEN-LAST:event_limparArquivoActionPerformed
-
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
 
-        JPanel loginUsuario = new JPanel();
-        JLabel lgUsuario = new JLabel("Login");
-        JTextField cpUsuario = new JTextField(10);
-        loginUsuario.add(lgUsuario);
-        loginUsuario.add(cpUsuario);
-        
-        JPanel senhaUsuario = new JPanel();
-        JLabel lgSenha = new JLabel("Senha");
-        JPasswordField passwordUsuario = new JPasswordField(10);
-        passwordUsuario.setEchoChar('*'); 
-        senhaUsuario.add(lgSenha);
-        senhaUsuario.add(passwordUsuario);
-
-        JOptionPane.showMessageDialog(null, loginUsuario, "Acesso restrito", JOptionPane.PLAIN_MESSAGE);
-        JOptionPane.showMessageDialog(null, senhaUsuario, "Acesso restrito", JOptionPane.PLAIN_MESSAGE);
-        
-        char[] senhaVet = passwordUsuario.getPassword();
-        String senha = String.copyValueOf(senhaVet);
-        if (!senha.equals("123")){
-            JOptionPane.showMessageDialog(null, "Senha invalida");
-        }
-        System.out.println(senha);
+        String senha = "";
         do {
-            if (!senha.equals("123")){
-                
                 senha = "";
+                JPasswordField passwordUsuario = new JPasswordField(10);
+                char[] senhaVet = passwordUsuario.getPassword();
+                
+                JPanel loginUsuario = new JPanel();
+                JLabel lgUsuario = new JLabel("Login");
+                JTextField cpUsuario = new JTextField(10);
+                loginUsuario.add(lgUsuario);
+                loginUsuario.add(cpUsuario);
                 
                 JPanel novaTentativa = new JPanel();
                 JLabel novaSenha = new JLabel("Senha");
@@ -341,9 +353,12 @@ public class Telas extends javax.swing.JFrame {
                 
                 senhaVet = novoPassword.getPassword();
                 senha = String.copyValueOf(senhaVet);
-                System.out.println(senha);
-                JOptionPane.showMessageDialog(null, "Senha invalida");
-            }
+                if (!senha.equals("123")){
+                    int result = JOptionPane.showConfirmDialog(null, "Senha incorreta! Sair?", "*** Senha incorreta ***", JOptionPane.YES_NO_CANCEL_OPTION);
+                    if (result == JOptionPane.YES_OPTION) 
+                        System.exit(0);
+                }
+            
         } while (!senha.equals("123"));
         
         /* Set the Nimbus look and feel */
@@ -390,7 +405,6 @@ public class Telas extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JButton lerArquivo;
-    private javax.swing.JButton limparArquivo;
     private javax.swing.JLabel qntConsoantes;
     private javax.swing.JLabel qntEspaco;
     private javax.swing.JLabel qntVogais;

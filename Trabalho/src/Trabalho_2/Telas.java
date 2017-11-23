@@ -8,7 +8,7 @@ package Trabalho_2;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,18 +16,18 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.stage.FileChooser;
-import javax.swing.JButton;
+//import javafx.stage.FileChooser;
+//import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
+//import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import sun.swing.FilePane;
+//import javax.swing.filechooser.FileNameExtensionFilter;
+//import sun.swing.FilePane;
 
 /**
  *
@@ -43,9 +43,49 @@ public class Telas extends javax.swing.JFrame {
         initComponents();
     }
     
+    public void salvar(){
+        if (caixa.Nome == null){
+            JOptionPane.showMessageDialog(null, "Insira um arquivo para ser modificado!");
+        } else {
+            caixa.Texto = Tela1.getText();
+            File arq = new File(caixa.Diretorio);
+
+            try {
+                FileWriter fw = new FileWriter(arq, false);
+                PrintWriter pw = new PrintWriter(fw);
+                pw.write(""); 
+                pw.flush();
+                pw.write(caixa.Texto);
+                pw.flush();
+                pw.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Telas.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Tela2.setText(caixa.Texto);
+            atualizaLetras();
+        }
+    }
+    
+    public void tred() {
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(5000);                       
+                        salvar();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Telas.class.getName()).log(Level.SEVERE, null, ex);
+                    } 
+                }
+            }
+        }
+        );
+        thread1.start();
+    }
+    
     public void atualizaLetras(){
         int vog = 0, cons = 0, espc = 0;
-
         String frase = caixa.Texto.toLowerCase();
         for(int i = 0; i < frase.length(); i++){
             char c = frase.charAt(i);
@@ -53,17 +93,16 @@ public class Telas extends javax.swing.JFrame {
                 espc++;
                 continue;
             }
-            if(c == 97 | c == 101 | c == 105 | c == 111 | c == 117){
+            if((c == 97 | c == 101 | c == 105 | c == 111 | c == 117) || (c >= 224 && c <= 230) || (c >= 232 && c <= 256)){
                 vog++;
                 continue;
             }
-            if(c >= 98 && c <= 122) cons++;
+            if((c >= 98 && c <= 122) || (c == 231)) 
+                cons++;
         }
-
         qntVogais.setText(Integer.toString(vog));
         qntConsoantes.setText(Integer.toString(cons));
         qntEspaco.setText(Integer.toString(espc));
-        
         vog = 0; cons = 0; espc = 0;
     }
     
@@ -158,6 +197,7 @@ public class Telas extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Trabalho 2");
 
         lerArquivo.setText("Ler Arquivo");
         lerArquivo.addActionListener(new java.awt.event.ActionListener() {
@@ -239,7 +279,7 @@ public class Telas extends javax.swing.JFrame {
                     .addComponent(jScrollPane3))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(qntVogais, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -264,38 +304,21 @@ public class Telas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void salvarArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarArquivoActionPerformed
-        if (caixa.Nome == null){
-            JOptionPane.showMessageDialog(null, "Insira um arquivo para ser modificado!");
-        } else {
-            caixa.Texto = Tela1.getText();
-            File arq = new File(caixa.Diretorio);
-
-            try {
-                FileWriter fw = new FileWriter(arq, false);
-                PrintWriter pw = new PrintWriter(fw);
-                pw.write(""); 
-                pw.flush();
-                pw.write(caixa.Texto);
-                pw.flush();
-                pw.close();
-            } catch (IOException ex) {
-                Logger.getLogger(Telas.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            Tela2.setText(caixa.Texto);
-            atualizaLetras();
-        }
+        salvar();
+        //tred();
     }//GEN-LAST:event_salvarArquivoActionPerformed
 
     private void lerArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lerArquivoActionPerformed
         caixa.Texto = "";
-        Tela2.setText("");
-        Tela1.setText("");
         JFileChooser chooser = new JFileChooser();
         CustomFileFilter filtro = new CustomFileFilter("Arquivos de texto", new String[] {"txt"});
         chooser.setFileFilter(filtro);
         chooser.setAcceptAllFileFilterUsed(false);
-        if (chooser.showSaveDialog(null) != JFileChooser.APPROVE_OPTION)
+        if (chooser.showOpenDialog(this) != JFileChooser.APPROVE_OPTION){
             return;
+        } else {
+            Tela1.setText("");
+        }
         File file = chooser.getSelectedFile();
         if (!file.getAbsolutePath().endsWith(".txt"))
             file = new File(file.getAbsolutePath() + ".txt");
@@ -318,14 +341,13 @@ public class Telas extends javax.swing.JFrame {
         }
         jLabel5.setText(caixa.Nome);
         atualizaLetras();
-        
+        tred();
     }//GEN-LAST:event_lerArquivoActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-
         String senha = "";
         do {
                 senha = "";
